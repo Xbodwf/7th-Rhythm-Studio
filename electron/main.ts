@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
@@ -29,6 +29,7 @@ let win: BrowserWindow | null
 function createWindow() {
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
+    frame: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
     },
@@ -63,6 +64,25 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow()
   }
+})
+
+// 窗口控制
+ipcMain.on('minimize-window', () => {
+  if (win) win.minimize()
+})
+
+ipcMain.on('maximize-window', () => {
+  if (win) {
+    if (win.isMaximized()) {
+      win.unmaximize()
+    } else {
+      win.maximize()
+    }
+  }
+})
+
+ipcMain.on('close-window', () => {
+  if (win) win.close()
 })
 
 app.whenReady().then(createWindow)

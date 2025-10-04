@@ -158,6 +158,9 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({ chil
     try {
       subscriptionService.enableSubscription(id);
       
+      // 先设置加载状态
+      setIsLoading(true);
+      
       // 更新状态
       const updatedSubscriptions = subscriptions.map(sub => ({
         ...sub,
@@ -173,12 +176,17 @@ export const SubscriptionProvider: React.FC<SubscriptionProviderProps> = ({ chil
       // 更新工具列表
       if (newActiveSubscription && newActiveSubscription.data) {
         setTools(newActiveSubscription.data.data.tools);
+        setIsLoading(false);
       } else if (newActiveSubscription && !newActiveSubscription.isLocal) {
+        // 异步加载数据，保持加载状态直到完成
         loadSubscriptionData(newActiveSubscription);
+        // loadSubscriptionData 内部会处理 setIsLoading(false)
       } else {
         setTools([]);
+        setIsLoading(false);
       }
     } catch (err) {
+      setIsLoading(false);
       setError(`Failed to enable subscription: ${err instanceof Error ? err.message : String(err)}`);
       console.error(err);
     }

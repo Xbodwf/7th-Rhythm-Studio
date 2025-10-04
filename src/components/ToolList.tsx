@@ -53,58 +53,61 @@ const ToolList: React.FC<ToolListProps> = ({ onSelectTool }) => {
   }
 
   return (
-    <Box sx={{ p: { xs: 1, sm: 2 } }}>
-      <Typography variant="h6" gutterBottom>
+    <Box sx={{ p: { xs: 1, sm: 1.5 } }}>
+      <Typography variant="subtitle1" sx={{ fontWeight: 'medium', mb: 1 }}>
         工具列表
       </Typography>
-      <Divider sx={{ mb: 2 }} />
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: { xs: 0, sm: 2 } }}>
+      <Divider sx={{ mb: 1.5 }} />
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, p: { xs: 0, sm: 0.5 } }}>
         {tools.map((tool) => (
           <Card 
             key={tool.id}
             sx={{ 
               display: 'flex', 
-              flexDirection: { xs: 'column', sm: 'row' },
+              flexDirection: 'row',
               cursor: 'pointer',
-              borderRadius: 4,
+              borderRadius: 2,
               overflow: 'hidden',
               transition: 'all 0.2s ease-in-out',
               '&:hover': {
                 transform: 'scale(1.01)',
-                boxShadow: 3
-              }
+                boxShadow: 2
+              },
+              height: '70px'
             }}
             onClick={() => onSelectTool(tool)}
           >
             <CardMedia
               component="img"
               sx={{ 
-                width: { xs: '100%', sm: 100 }, 
-                height: { xs: 140, sm: 100 }, 
+                width: 70, 
+                height: 70, 
                 objectFit: 'contain', 
                 p: 1,
-                borderRadius: 4
+                borderRadius: 2
               }}
-              image={tool.icon || 'https://via.placeholder.com/100'}
+              image={tool.icon || 'https://via.placeholder.com/70'}
               alt={tool.name}
             />
             <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-              <CardContent sx={{ flex: '1 0 auto', pb: 1 }}>
-                <Typography component="div" variant="h6">
+              <CardContent sx={{ flex: '1 0 auto', py: 1, px: 1.5 }}>
+                <Typography component="div" variant="subtitle2" sx={{ fontWeight: 'medium' }}>
                   {tool.name}
                 </Typography>
-                <Typography variant="caption" color="text.secondary" component="div">
+                <Typography variant="caption" color="text.secondary" component="div" sx={{ fontSize: '0.7rem' }}>
                   下载次数: {tool.downloads}
                 </Typography>
                 <Typography
-                  variant="body2"
+                  variant="caption"
                   color="text.secondary"
                   sx={{
+                    display: '-webkit-box',
+                    WebkitLineClamp: 1,
+                    WebkitBoxOrient: 'vertical',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
+                    mt: 0.5,
+                    fontSize: '0.7rem'
                   }}
                 >
                   {tool.description}
